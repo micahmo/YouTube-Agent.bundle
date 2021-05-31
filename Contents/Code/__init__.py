@@ -85,7 +85,9 @@ def img_load(series_root_folder, filename):
   return "", None
 
 def Start():
-  HTTP.CacheTime                  = CACHE_1MONTH
+  # Set the cache time to 1 hour in seconds.
+  # (Otherwise, playlist details will get stale.)
+  HTTP.CacheTime                  = 3600
   HTTP.Headers['User-Agent'     ] = 'Mozilla/5.0 (iPad; CPU OS 7_0_4 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11B554a Safari/9537.54'
   HTTP.Headers['Accept-Language'] = 'en-us'
 
