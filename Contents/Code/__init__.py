@@ -426,7 +426,7 @@ def Update(metadata, media, lang, force, movie):
             episode.title                   = sanitize_path(Dict(video, 'snippet', 'title'       ));             Log.Info(u'[ ] title:        {}'.format(Dict(video, 'snippet', 'title'       )))
 
             # mdm
-            begin_regexp = r'^({0}\s*[Presents]*\s*[|:\-–—]*\s*)*(.*)$'.format(metadata.title.strip())
+            begin_regexp = r'^({0}\s*(?:Presents)*\s*[|:\-–—]*\s*)*(.*)$'.format(metadata.title.strip())
             end_regex = r'^(.*)(\s*[|:\-–—]+\s*{0})+$'.format(metadata.title.strip())
 
             clean_title = re.sub(begin_regexp, r"\2", episode.title, flags=re.IGNORECASE).strip()
@@ -434,6 +434,7 @@ def Update(metadata, media, lang, force, movie):
 
             if clean_title:
               episode.title = clean_title
+              Log.Info(u'[ ] clean_title:        {}'.format(episode.title))
 
             episode.summary                 = sanitize_path(Dict(video, 'snippet', 'description' ));             Log.Info(u'[ ] description:  {}'.format(Dict(video, 'snippet', 'description' ).replace('\n', '. ')))
             episode.originally_available_at = Datetime.ParseDate(Dict(video, 'contentDetails', 'videoPublishedAt')).date();  Log.Info('[ ] publishedAt:  {}'.format(Dict(video, 'contentDetails', 'videoPublishedAt' )))
@@ -471,7 +472,7 @@ def Update(metadata, media, lang, force, movie):
                 episode.title                   = sanitize_path(Dict(json_video_details, 'title'));            Log.Info(u'[ ] title:    "{}"'.format(Dict(json_video_details, 'title')))
                 
                 # mdm
-                begin_regexp = r'^({0}\s*[Presents]*\s*[|:\-–—]*\s*)*(.*)$'.format(metadata.title.strip())
+                begin_regexp = r'^({0}\s*(?:Presents)*\s*[|:\-–—]*\s*)*(.*)$'.format(metadata.title.strip())
                 end_regex = r'^(.*)(\s*[|:\-–—]+\s*{0})+$'.format(metadata.title.strip())
 
                 clean_title = re.sub(begin_regexp, r"\2", episode.title, flags=re.IGNORECASE).strip()
@@ -479,6 +480,7 @@ def Update(metadata, media, lang, force, movie):
 
                 if clean_title:
                   episode.title = clean_title
+                  Log.Info(u'[ ] clean_title:    "{}"'.format(episode.title))
                 
                 episode.summary                 = sanitize_path(Dict(json_video_details, 'description'));      Log.Info(u'[ ] summary:  "{}"'.format(Dict(json_video_details, 'description').replace('\n', '. ')))
                 if len(e)>3: episode.originally_available_at = Datetime.ParseDate(Dict(json_video_details, 'upload_date')).date();  Log.Info(u'[ ] date:     "{}"'.format(Dict(json_video_details, 'upload_date')))
@@ -512,7 +514,7 @@ def Update(metadata, media, lang, force, movie):
                 episode.title                   = sanitize_path(json_video_details['snippet']['title']);                                 Log.Info('[ ] title:    "{}"'.format(json_video_details['snippet']['title']))
                 
                 # mdm
-                begin_regexp = r'^({0}\s*[Presents]*\s*[|:\-–—]*\s*)*(.*)$'.format(metadata.title.strip())
+                begin_regexp = r'^({0}\s*(?:Presents)*\s*[|:\-–—]*\s*)*(.*)$'.format(metadata.title.strip())
                 end_regex = r'^(.*)(\s*[|:\-–—]+\s*{0})+$'.format(metadata.title.strip())
 
                 clean_title = re.sub(begin_regexp, r"\2", episode.title, flags=re.IGNORECASE).strip()
@@ -520,6 +522,7 @@ def Update(metadata, media, lang, force, movie):
 
                 if clean_title:
                   episode.title = clean_title
+                  Log.Info('[ ] clean_title:    "{}"'.format(episode.title))
                 
                 episode.summary                 = sanitize_path(json_video_details['snippet']['description']);                           Log.Info('[ ] summary:  "{}"'.format(json_video_details['snippet']['description'].replace('\n', '. ')))
                 if len(e)>3:  episode.originally_available_at = Datetime.ParseDate(json_video_details['snippet']['publishedAt']).date();                       Log.Info('[ ] date:     "{}"'.format(json_video_details['snippet']['publishedAt']))
