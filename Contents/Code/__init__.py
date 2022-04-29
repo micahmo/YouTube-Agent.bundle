@@ -293,7 +293,10 @@ def Update(metadata, media, lang, force, movie):
         Log.Info('[?] json_playlist_details: {}'.format(json_playlist_details.keys()))
         channel_id                       = Dict(json_playlist_details, 'snippet', 'channelId');                               Log.Info('[ ] channel_id: "{}"'.format(channel_id))
         title                            = sanitize_path(Dict(json_playlist_details, 'snippet', 'title'));                    Log.Info('[ ] title:      "{}"'.format(metadata.title))
-        if title: metadata.title = title
+        if title:
+          # In case this is a channel playlist (UU), remove the "Uploads from " prefix.
+          title = title.replace('Uploads from ', '')
+          metadata.title = title
         metadata.originally_available_at = Datetime.ParseDate(Dict(json_playlist_details, 'snippet', 'publishedAt')).date();  Log.Info('[ ] publishedAt:  {}'.format(Dict(json_playlist_details, 'snippet', 'publishedAt' )))
         metadata.summary                 = Dict(json_playlist_details, 'snippet', 'description');                             Log.Info('[ ] summary:     "{}"'.format((Dict(json_playlist_details, 'snippet', 'description').replace('\n', '. '))))
         
