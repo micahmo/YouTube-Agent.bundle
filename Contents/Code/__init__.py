@@ -307,7 +307,7 @@ def Update(metadata, media, lang, force, movie):
         Log.Info('[?] json_playlist_items: {}'.format(json_playlist_items.keys()))
         first_video = sorted(Dict(json_playlist_items, 'items'), key=lambda i: Dict(i, 'contentDetails', 'videoPublishedAt'))[0]
         thumb = Dict(first_video, 'snippet', 'thumbnails', 'maxres', 'url') or Dict(first_video, 'snippet', 'thumbnails', 'medium', 'url') or Dict(first_video, 'snippet', 'thumbnails', 'standard', 'url') or Dict(first_video, 'snippet', 'thumbnails', 'high', 'url') or Dict(first_video, 'snippet', 'thumbnails', 'default', 'url')
-        if thumb and thumb not in metadata.posters:  Log('[ ] posters:   {}'.format(thumb));  metadata.posters [thumb] = Proxy.Media(HTTP.Request(thumb).content, sort_order=1 if Prefs['media_poster_source']=='Episode' else 2)
+        if thumb and thumb not in metadata.posters:  Log('[ ] posters:   {}'.format(thumb));  metadata.posters [thumb] = Proxy.Media(HTTP.Request(thumb).content, sort_order=1 if Prefs['media_poster_source']=='Episode' and guid[0:2] != 'UU' else 2)
         else:                                        Log('[X] posters:   {}'.format(thumb))
     
     ### Series - Channel ###############################################################################################################
@@ -371,7 +371,7 @@ def Update(metadata, media, lang, force, movie):
                 else:                                        Log('[ ] banners:   {}'.format(thumb))
                 if thumb_channel and thumb_channel not in metadata.posters:
                   Log('[X] posters:   {}'.format(thumb_channel))
-                  metadata.posters [thumb_channel] = Proxy.Media(HTTP.Request(thumb_channel).content, sort_order=1 if Prefs['media_poster_source']=='Channel' else 2)
+                  metadata.posters [thumb_channel] = Proxy.Media(HTTP.Request(thumb_channel).content, sort_order=1 if Prefs['media_poster_source']=='Channel' or guid[0:2] == 'UU' else 2)
                   #metadata.posters.validate_keys([thumb_channel])
                 else:                                                        Log('[ ] posters:   {}'.format(thumb_channel))
         
@@ -389,7 +389,7 @@ def Update(metadata, media, lang, force, movie):
           if thumb_channel and thumb_channel not in metadata.posters:
             #thumb_channel = sanitize_path(thumb_channel)
             Log(u'[X] posters:   {}'.format(thumb_channel))
-            metadata.posters [thumb_channel] = Proxy.Media(HTTP.Request(thumb_channel).content, sort_order=1 if Prefs['media_poster_source']=='Channel' else 2)
+            metadata.posters [thumb_channel] = Proxy.Media(HTTP.Request(thumb_channel).content, sort_order=1 if Prefs['media_poster_source']=='Channel' or guid[0:2] == 'UU' else 2)
             #metadata.posters.validate_keys([thumb_channel])
           else:                                        Log('[ ] posters:   {}'.format(thumb_channel))
           metadata.roles.clear()
