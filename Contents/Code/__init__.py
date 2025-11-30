@@ -162,6 +162,21 @@ def Search(results, media, lang, manual, movie):
   results.Append( MetadataSearchResult( id='youtube|{}|{}'.format(path.split(os.sep)[-2] if os.sep in path else '', dir), name=os.path.basename(filename), year=None, score=80, lang=lang ) )
   Log(''.ljust(157, '='))
 
+### Generates the episode description and includes the original YouTube link at the beginning
+def build_episode_summary(video_id, description):
+  """Build episode summary with the YouTube link prepended if we have an ID."""
+  if not isinstance(description, unicode):
+    description = unicode(description or '', 'utf-8')
+
+  if video_id:
+    link = u'Original video: https://youtu.be/{}'.format(video_id)
+    if description:
+      return u'{}\n\n{}'.format(link, description)
+    else:
+      return link
+  else:
+    return description or u''
+
 ### Download metadata using unique ID ###
 def Update(metadata, media, lang, force, movie):
   Log(u'=== update(lang={}, force={}, movie={}) ==='.format(lang, force, movie))
@@ -195,7 +210,7 @@ def Update(metadata, media, lang, force, movie):
         ### Movie - Local JSON
         Log.Info(u'update() using json file json_video_details - Loaded video details from: "{}"'.format(json_filename))
         metadata.title                   = Dict(json_video_details, 'title');                                  Log(u'series title:       "{}"'.format(Dict(json_video_details, 'title')))
-        metadata.summary                 = Dict(json_video_details, 'description');                            Log(u'series description: '+Dict(json_video_details, 'description').replace('\n', '. '))
+        metadata.summary                 = build_episode_summary(guid, Dict(json_video_details, 'description'));                            Log(u'series description: '+Dict(json_video_details, 'description').replace('\n', '. '))
         metadata.duration                = Dict(json_video_details, 'duration');                               Log(u'series duration:    "{}"->"{}"'.format(Dict(json_video_details, 'duration'), metadata.duration))
         metadata.genres                  = Dict(json_video_details, 'categories');                             Log(u'genres: '+str([x for x in metadata.genres]))
         date                             = Datetime.ParseDate(Dict(json_video_details, 'upload_date'));        Log(u'date:  "{}"'.format(date))
@@ -439,7 +454,7 @@ def Update(metadata, media, lang, force, movie):
               episode.title = clean_title
               Log.Info(u'[ ] clean_title:        {}'.format(episode.title))
 
-            episode.summary                 = sanitize_path(Dict(video, 'snippet', 'description' ));             Log.Info(u'[ ] description:  {}'.format(Dict(video, 'snippet', 'description' ).replace('\n', '. ')))
+            episode.summary                 = build_episode_summary(videoId, sanitize_path(Dict(video, 'snippet', 'description' )));             Log.Info(u'[ ] description:  {}'.format(Dict(video, 'snippet', 'description' ).replace('\n', '. ')))
             episode.originally_available_at = Datetime.ParseDate(Dict(video, 'contentDetails', 'videoPublishedAt')).date();  Log.Info('[ ] publishedAt:  {}'.format(Dict(video, 'contentDetails', 'videoPublishedAt' )))
             thumb                           = Dict(video, 'snippet', 'thumbnails', 'maxres', 'url') or Dict(video, 'snippet', 'thumbnails', 'medium', 'url')or Dict(video, 'snippet', 'thumbnails', 'standard', 'url') or Dict(video, 'snippet', 'thumbnails', 'high', 'url') or Dict(video, 'snippet', 'thumbnails', 'default', 'url')
             if thumb and thumb not in episode.thumbs:  episode.thumbs[thumb] = Proxy.Media(HTTP.Request(thumb).content, sort_order=1);                                Log.Info('[ ] thumbnail:    {}'.format(thumb))
@@ -485,7 +500,7 @@ def Update(metadata, media, lang, force, movie):
                   episode.title = clean_title
                   Log.Info(u'[ ] clean_title:    "{}"'.format(episode.title))
                 
-                episode.summary                 = sanitize_path(Dict(json_video_details, 'description'));      Log.Info(u'[ ] summary:  "{}"'.format(Dict(json_video_details, 'description').replace('\n', '. ')))
+                episode.summary                 = build_episode_summary(videoId, sanitize_path(Dict(json_video_details, 'description')));      Log.Info(u'[ ] summary:  "{}"'.format(Dict(json_video_details, 'description').replace('\n', '. ')))
                 if len(e)>3: episode.originally_available_at = Datetime.ParseDate(Dict(json_video_details, 'upload_date')).date();  Log.Info(u'[ ] date:     "{}"'.format(Dict(json_video_details, 'upload_date')))
                 episode.duration                = int(Dict(json_video_details, 'duration'));                           Log.Info(u'[ ] duration: "{}"'.format(episode.duration))
                 if Dict(json_video_details, 'likeCount') and int(Dict(json_video_details, 'like_count')) > 0 and Dict(json_video_details, 'dislike_count') and int(Dict(json_video_details, 'dislike_count')) > 0:
@@ -527,7 +542,7 @@ def Update(metadata, media, lang, force, movie):
                   episode.title = clean_title
                   Log.Info('[ ] clean_title:    "{}"'.format(episode.title))
                 
-                episode.summary                 = sanitize_path(json_video_details['snippet']['description']);                           Log.Info('[ ] summary:  "{}"'.format(json_video_details['snippet']['description'].replace('\n', '. ')))
+                episode.summary                 = build_episode_summary(videoId, sanitize_path(json_video_details['snippet']['description']));                           Log.Info('[ ] summary:  "{}"'.format(json_video_details['snippet']['description'].replace('\n', '. ')))
                 if len(e)>3:  episode.originally_available_at = Datetime.ParseDate(json_video_details['snippet']['publishedAt']).date();                       Log.Info('[ ] date:     "{}"'.format(json_video_details['snippet']['publishedAt']))
                 episode.duration                = ISO8601DurationToSeconds(json_video_details['contentDetails']['duration'])*1000;               Log.Info('[ ] duration: "{}"->"{}"'.format(json_video_details['contentDetails']['duration'], episode.duration))
                 if Dict(json_video_details, 'statistics', 'likeCount') and int(json_video_details['statistics']['likeCount']) > 0 and Dict(json_video_details, 'statistics', 'dislikeCount') and int(Dict(json_video_details, 'statistics', 'dislikeCount')) > 0:
