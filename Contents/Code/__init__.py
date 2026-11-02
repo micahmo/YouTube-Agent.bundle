@@ -437,7 +437,11 @@ def Update(metadata, media, lang, force, movie):
         Log.Info('[?] json_playlist_items: {}'.format(json_playlist_items.keys()))
         first_video = sorted(Dict(json_playlist_items, 'items'), key=lambda i: Dict(i, 'contentDetails', 'videoPublishedAt'))[0]
         thumb = Dict(first_video, 'snippet', 'thumbnails', 'maxres', 'url') or Dict(first_video, 'snippet', 'thumbnails', 'medium', 'url') or Dict(first_video, 'snippet', 'thumbnails', 'standard', 'url') or Dict(first_video, 'snippet', 'thumbnails', 'high', 'url') or Dict(first_video, 'snippet', 'thumbnails', 'default', 'url')
-        if thumb and thumb not in metadata.posters:  Log('[ ] posters:   {}'.format(thumb));  metadata.posters [thumb] = Proxy.Media(HTTP.Request(thumb).content, sort_order=1 if Prefs['media_poster_source']=='Episode' and guid[0:2] != 'UU' else 2)
+        if thumb and thumb not in metadata.posters:
+          Log('[ ] posters:   {}'.format(thumb))
+          # Skip a thumbnail that no longer exists instead of aborting the update
+          try:                    metadata.posters [thumb] = Proxy.Media(HTTP.Request(thumb).content, sort_order=1 if Prefs['media_poster_source']=='Episode' and guid[0:2] != 'UU' else 2)
+          except Exception as e:  Log.Info('[!] posters exception: {}, url: {}'.format(e, thumb))
         else:                                        Log('[X] posters:   {}'.format(thumb))
     
     ### Series - Channel ###############################################################################################################
