@@ -1,3 +1,20 @@
+## Fork: [@micahmo](https://github.com/micahmo)
+
+This is a fork of [ZeroQI/YouTube-Agent.bundle](https://github.com/ZeroQI/YouTube-Agent.bundle) that merges upstream changes, with the following additions:
+
+**Features**
+- Remove the channel name from episode titles, e.g. "Channel | Video title" becomes "Video title" ([cd9f559](https://github.com/micahmo/YouTube-Agent.bundle/commit/cd9f559), [8cd8088](https://github.com/micahmo/YouTube-Agent.bundle/commit/8cd8088))
+- [Remove the "Uploads from" prefix from the titles of channel upload playlists (UU)](https://github.com/micahmo/YouTube-Agent.bundle/commit/5d97e77)
+- [Always use the channel's avatar as the poster for channel upload playlists (UU)](https://github.com/micahmo/YouTube-Agent.bundle/commit/2bd0d63)
+- [Start each episode's description with a link to the original YouTube video](https://github.com/micahmo/YouTube-Agent.bundle/commit/292691c)
+- [Cache YouTube lookups for an hour instead of a month, so playlist details don't go stale](https://github.com/micahmo/YouTube-Agent.bundle/commit/3a1bff9)
+
+**Fixes**
+- [Skip a series poster whose thumbnail no longer exists instead of aborting the update](https://github.com/micahmo/YouTube-Agent.bundle/commit/c2427fb)
+- [Drop thumbnails an episode kept from a video that previously had its episode number](https://github.com/micahmo/YouTube-Agent.bundle/commit/9474974)
+
+---
+
 # YouTube-Agent.bundle: Plex Movie & TV Series library agent
 
 This is a Metadata Agent for downloaded YouTube videos. It works by looking up
