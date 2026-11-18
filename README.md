@@ -3,15 +3,15 @@
 This is a fork of [ZeroQI/YouTube-Agent.bundle](https://github.com/ZeroQI/YouTube-Agent.bundle) that merges upstream changes, with the following additions:
 
 **Features**
-- Remove the channel name from episode titles, e.g. "Channel | Video title" becomes "Video title" ([cd9f559](https://github.com/micahmo/YouTube-Agent.bundle/commit/cd9f559), [8cd8088](https://github.com/micahmo/YouTube-Agent.bundle/commit/8cd8088))
-- [Remove the "Uploads from" prefix from the titles of channel upload playlists (UU)](https://github.com/micahmo/YouTube-Agent.bundle/commit/5d97e77)
-- [Always use the channel's avatar as the poster for channel upload playlists (UU)](https://github.com/micahmo/YouTube-Agent.bundle/commit/2bd0d63)
-- [Start each episode's description with a link to the original YouTube video](https://github.com/micahmo/YouTube-Agent.bundle/commit/292691c)
-- [Cache YouTube lookups for an hour instead of a month, so playlist details don't go stale](https://github.com/micahmo/YouTube-Agent.bundle/commit/3a1bff9)
+- [`cd9f559`](https://github.com/micahmo/YouTube-Agent.bundle/commit/cd9f559), [`8cd8088`](https://github.com/micahmo/YouTube-Agent.bundle/commit/8cd8088) - Remove the channel name from episode titles, e.g. "Channel | Video title" becomes "Video title"
+- [`5d97e77`](https://github.com/micahmo/YouTube-Agent.bundle/commit/5d97e77) - Remove the "Uploads from" prefix from the titles of channel upload playlists (UU)
+- [`2bd0d63`](https://github.com/micahmo/YouTube-Agent.bundle/commit/2bd0d63) - Always use the channel's avatar as the poster for channel upload playlists (UU)
+- [`292691c`](https://github.com/micahmo/YouTube-Agent.bundle/commit/292691c) - Start each episode's description with a link to the original YouTube video
+- [`3a1bff9`](https://github.com/micahmo/YouTube-Agent.bundle/commit/3a1bff9) - Cache YouTube lookups for an hour instead of a month, so playlist details don't go stale
 
 **Fixes**
-- [Skip a series poster whose thumbnail no longer exists instead of aborting the update](https://github.com/micahmo/YouTube-Agent.bundle/commit/c2427fb)
-- [Drop thumbnails an episode kept from a video that previously had its episode number](https://github.com/micahmo/YouTube-Agent.bundle/commit/9474974)
+- [`c2427fb`](https://github.com/micahmo/YouTube-Agent.bundle/commit/c2427fb) - Skip a series poster whose thumbnail no longer exists instead of aborting the update
+- [`9474974`](https://github.com/micahmo/YouTube-Agent.bundle/commit/9474974) - Drop thumbnails an episode kept from a video that previously had its episode number
 
 ---
 
