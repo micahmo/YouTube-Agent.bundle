@@ -584,6 +584,7 @@ def Update(metadata, media, lang, force, movie):
 
             thumb                           = Dict(video, 'snippet', 'thumbnails', 'maxres', 'url') or Dict(video, 'snippet', 'thumbnails', 'medium', 'url')or Dict(video, 'snippet', 'thumbnails', 'standard', 'url') or Dict(video, 'snippet', 'thumbnails', 'high', 'url') or Dict(video, 'snippet', 'thumbnails', 'default', 'url')
             if thumb and thumb not in episode.thumbs:  episode.thumbs[thumb] = Proxy.Media(HTTP.Request(thumb).content, sort_order=1);                                Log.Info('[ ] thumbnail:    {}'.format(thumb))
+            if thumb:                                  episode.thumbs.validate_keys([thumb])  # Drop thumbnails left by a video that previously had this episode number
             Log.Info(u'[ ] channelTitle: {}'.format(Dict(video, 'snippet', 'channelTitle')))
             break
         
