@@ -448,7 +448,8 @@ def Update(metadata, media, lang, force, movie):
     if channel_id.startswith('UC') or channel_id.startswith('HC'):
       try:
         json_channel_details  = json_load(YOUTUBE_CHANNEL_DETAILS, channel_id)['items'][0]
-        json_channel_items    = json_load(YOUTUBE_CHANNEL_ITEMS, channel_id)
+        # A search costs 100 quota units per page, and its videos are only used when the playlist returned none
+        if not Dict(json_playlist_items, 'items'):  json_channel_items = json_load(YOUTUBE_CHANNEL_ITEMS, channel_id)
       except Exception as e:  Log('exception: {}, url: {}'.format(e, guid))
       else:
         
