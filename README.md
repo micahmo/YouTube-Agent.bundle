@@ -12,6 +12,7 @@ This is a fork of [ZeroQI/YouTube-Agent.bundle](https://github.com/ZeroQI/YouTub
 **Fixes**
 - [`c2427fb`](https://github.com/micahmo/YouTube-Agent.bundle/commit/c2427fb) - Skip a series poster whose thumbnail no longer exists instead of aborting the update
 - [`9474974`](https://github.com/micahmo/YouTube-Agent.bundle/commit/9474974) - Drop thumbnails an episode kept from a video that previously had its episode number
+- [`6d0bc82`](https://github.com/micahmo/YouTube-Agent.bundle/commit/6d0bc82) - Only search a channel's videos when its playlist returned none, since each search page costs 100 quota units and running out of search quota also skipped the channel's poster, art and cast
 
 ---
 
